@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template
-from ..models import *
+#from src.models import *
 
 admin = Blueprint('admin', __name__)
 
@@ -7,3 +7,4 @@ admin = Blueprint('admin', __name__)
 def timeline(user_url_slug):
     # Do some stuff
     return render_template('admin/admin.html')
+
