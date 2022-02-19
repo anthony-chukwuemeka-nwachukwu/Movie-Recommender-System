@@ -1,6 +1,13 @@
 flask
 gunicorn
 flask-sqlalchemy
+flask_marshmallow
+marshmallow-sqlalchemy
 flask-migrate
 psycopg2
 flask_login
+urllib3
+selenium
+certifi
+webdriver_manager
+Pillow
