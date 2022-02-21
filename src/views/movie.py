@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template
-from ..models import *
+#from ..models import *
 
 movie = Blueprint('movie', __name__)
 

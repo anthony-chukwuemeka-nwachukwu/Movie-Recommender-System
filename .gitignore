@@ -1,6 +1,7 @@
 # my files
 docker-compose.yml
 src/ai/Dockerfile
+note
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
