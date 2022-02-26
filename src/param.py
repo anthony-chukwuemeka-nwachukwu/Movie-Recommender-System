@@ -7,7 +7,7 @@ imdb_genres = ['action','adventure','animation','biography','comedy',
                 'film-noir','history','horror','music','musical',
                 'mystery','romance','sci-fi','short','sport',
                 'superhero','thriller','war','western']
-imdb_years = list(range(1900,2023))
+imdb_years = list(range(2003,2023))
 imdb_url = lambda x:'https://www.imdb.com/search/title/?genres={}&title_type=feature&year={}&view=simple&sort=user_rating,desc'.format(x[0],x[1])
 
 def get_year_index(year):
@@ -25,3 +25,4 @@ def get_genre_index(genre):
 if __name__=="__main__":
     print(get_year_index(2009))
     print(get_genre_index('adventure'))
+    print([i.lower() for i in []])
