@@ -2,6 +2,7 @@
 docker-compose.yml
 src/ai/Dockerfile
 note
+.idea/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
