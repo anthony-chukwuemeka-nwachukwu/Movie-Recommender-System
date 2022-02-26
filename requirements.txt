@@ -11,3 +11,7 @@ selenium
 certifi
 webdriver_manager
 Pillow
+flask_wtf
+wtforms
+email_validator
+python-dotenv

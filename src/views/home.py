@@ -1,9 +1,11 @@
 from flask import Blueprint, render_template
-#from ..models import *
+from src.forms.search import SearchForm
 
 home = Blueprint('home', __name__)
 
-@home.route('/<user_url_slug>')
-def timeline(user_url_slug):
-    # Do some stuff
-    return render_template('home/home.html')
+@home.route("/")
+@home.route("/index")
+@home.route("/home")
+def index():
+    form = SearchForm()
+    return render_template('index.html', form=form)
