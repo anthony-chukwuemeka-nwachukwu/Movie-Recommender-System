@@ -1,0 +1,114 @@
+<form name="login" action="" method="post" novalidate>
+    <div class="input-group">
+      <input type="search" class="form-control" id="search" placeholder="Search" name="search", style="width: 450px !important; height: 20px">
+        <button class="input-group-text border-0" id="search-addon", style="background-color: black; color: white;" type="submit">
+          <i class="fas fa-search"></i>
+        </button>
+    </div>
+  </form>
+
+
+
+
+  <form name="login" action="" method="post" novalidate>
+	<fieldset class="form-group">
+		{{ form.hidden_tag() }}
+		<span>
+			{{ form.query(size=35) }}<br>
+			{% for error in form.query.errors %}
+				<span class="error-message">{{ error }}</span>
+			{% endfor %}
+			{{ form.submit() }}
+		</span>
+	</fieldset>
+</form>
+
+from src import db
+
+def delete_like(like_id):
+    print(like_id)
+    query = """DELETE FROM movies_user_like WHERE movie_id={}""".format(like_id);
+    
+    """try:
+        db.session.execute(query)
+        db.session.commit()
+        return 'True'
+    except:
+        return 'False'"""
+    return 'True'
+
+
+function changeStarColor(movie_id, username){
+    let star_id = document.getElementById(movie_id);
+    console.log(star_id);
+  
+    if(star_id.style.color == 'orange' && deleteLike(movie_id)){
+      star_id.style.color = 'white';
+    }
+    else if(star_id.style.color == 'white' && insertLike(movie_id,username)){
+        star_id.style.color = 'orange';
+    }
+    //star_id.dataset.stared = col=='white'
+  }
+
+function deleteLike(movie_id){
+    return $.ajax({
+        url: "src/utils/production/delete_like.py",
+        data: {movie_id:movie_id}
+    });
+}
+
+function insertLike(movie_id,username){
+    return $.ajax({
+        url: "src/utils/production/insert_like.py",
+        data: {movie_id:movie_id, username:username}
+    });
+}
+
+
+
+
+
+
+<section class="sample-text-area">
+
+	<div class="container">
+	  {% for comment in comments %}
+		  <div class="get_comments">
+			<p class="post-meta">{{comment['user_name']}}  {{comment['createdAt']}}</p>
+			<p>{{comment['comment']}}</p>
+		  </div>
+	  {% endfor %}
+	</div>
+
+  </section>
+
+  <section class="contactform-area section-gap">
+	
+	<div class="container contact-div">
+	  <h3 style="padding-bottom: 20px;">Comment</h3>
+	
+	  <form id="contactForm" method="post" name="myemailform" action="{{ url_for('submit_comment') }}">
+	
+		<div class="mb-3">
+		  <input class="form-control" id="name" type="text" placeholder="Name" name="name"/>
+		</div>
+	
+		<div class="mb-3">
+		  <input class="form-control" id="emailAddress" type="email" placeholder="Email Address" name="email"/>
+		</div>
+	
+		<div class="mb-3">
+		  <textarea class="form-control" id="comment" type="text" placeholder="Leave a comment" style="height: 10rem;" name="comment"></textarea>
+		</div>
+
+		<input type="hidden" id="movie_id" name="movie_id" value={{movie_id}}>
+
+		<div class="d-grid">
+		  <button class="btn btn-primary btn-sm" type="submit">Submit</button>
+		</div>
+	
+	  </form>
+	
+	</div>
+	</section>
