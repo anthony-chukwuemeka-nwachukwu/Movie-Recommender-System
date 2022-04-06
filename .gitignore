@@ -3,6 +3,13 @@ docker-compose.yml
 src/ai/Dockerfile
 note
 .idea/
+src/utils/development/data/
+note.txt
+flask_session/
+etc/
+bin/*
+src/utils/production/movie-recommender.ipynb
+share/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
