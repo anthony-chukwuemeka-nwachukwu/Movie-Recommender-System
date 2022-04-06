@@ -15,3 +15,8 @@ flask_wtf
 wtforms
 email_validator
 python-dotenv
+flask_session
+num2words
+sklearn
+nltk
+numpy
