@@ -17,6 +17,14 @@ and presented based on the total scores of the movies contained in them.
 
 Both the collaborative filtering and bm25 were implemented from scratch.
 
+## Usage
+To use this repo,
+- first run the requirement file to install the dependencies  
+`pip3 install --no-cache-dir -r ./requirements.txt`  
+- then proceed to run the wsgi file  
+`python wsgi.py`
+
+
 ## Technologies Used
 1. Frontend
 - HTML5
