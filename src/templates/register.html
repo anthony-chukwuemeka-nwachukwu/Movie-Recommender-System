@@ -1,53 +1,113 @@
+{% extends "base.html" %}
 
-    {% extends "base.html" %}
-   
-    {% block content %}
-    
-    <div class="container">
-         <form name="login" action="" method="post" novalidate>
-        <fieldset class="form-group">
-            <legend>{{title}}</legend>     
-            {{ form.hidden_tag() }}       
-                <p> {{ form.email.label }}</br>
-                    {{ form.email }}
-                    {% for error in form.email.errors %}
-                     <span class="error-message">{{ error }}</span>
-                    {% endfor %}
-                </p>
-            
-                <p> {{ form.password.label }}</br>
-                    {{ form.password }}
-                    {% for error in form.password.errors %}
-                     <span class="error-message">{{ error }}</span>
-                    {% endfor %}
-                </p>
-            
-                <p> {{ form.password_confirm.label }}</br>
-                    {{ form.password_confirm }}
-                    {% for error in form.password_confirm.errors %}
-                     <span class="error-message">{{ error }}</span>
-                    {% endfor %}
-                </p>
-            
-                <p> {{ form.first_name.label }}</br>
-                    {{ form.first_name }}
-                    {% for error in form.first_name.errors %}
-                     <span class="error-message">{{ error }}</span>
-                    {% endfor %}
-                </p>
-            
-                <p> {{ form.last_name.label }}</br>
-                    {{ form.last_name }}
-                    {% for error in form.last_name.errors %}
-                     <span class="error-message">{{ error }}</span>
-                    {% endfor %}
-                </p>
-            
-                <p> 
-                    {{ form.submit() }}
-                </p>
-            
-        </fieldset>
-        </form>
-    </div>
-    {% endblock %}
+{% block content %}
+
+    <section class="register-area section-gap">
+        <div class="container">
+            <div class="offset-md-4" style="padding-bottom:50px"><h2>{{title}}</h2></div>
+            <div class="col-md-6 offset-md-3">
+
+                <form name="register" action="" method="post" novalidate>
+                    <fieldset class="form-group">
+
+                        {{ form.hidden_tag() }}
+
+                        <div class="register-personal-details">
+                            <h3> Personal Details</h3>
+
+                            <p> {{ form.email.label }}</br>
+                                {{ form.email(class="register-form-fields") }}
+                                {% for error in form.email.errors %}
+                                <span class="error-message">{{ error }}</span>
+                                {% endfor %}
+                            </p>
+
+                            <p> {{ form.password.label }}</br>
+                                {{ form.password(class="register-form-fields") }}
+                                {% for error in form.password.errors %}
+                                <span class="error-message">{{ error }}</span>
+                                {% endfor %}
+                            </p>
+
+                            <p> {{ form.password_confirm.label }}</br>
+                                {{ form.password_confirm(class="register-form-fields") }}
+                                {% for error in form.password_confirm.errors %}
+                                <span class="error-message">{{ error }}</span>
+                                {% endfor %}
+                            </p>
+
+                            <p> {{ form.first_name.label }}</br>
+                                {{ form.first_name(class="register-form-fields") }}
+                                {% for error in form.first_name.errors %}
+                                <span class="error-message">{{ error }}</span>
+                                {% endfor %}
+                            </p>
+
+                            <p> {{ form.last_name.label }}</br>
+                                {{ form.last_name(class="register-form-fields", id="last_name") }}
+                                {% for error in form.last_name.errors %}
+                                <span class="error-message">{{ error }}</span>
+                                {% endfor %}
+                            </p>
+                        </div>
+
+
+
+                        <div class="register-movie-details col-lg-12 col-md-12 col-sm-12 mx-auto">
+                            <h3>Movie choices</h3>
+
+                            {% for genre,movies in movies_by_genres.items() %}
+
+                            <div class="row" style="padding-bottom: 50px; padding-top: 50px;">
+
+                                <h4>{{genre}} </h4>
+
+                                {% for movie in movies %}
+
+                                    <div class="genre-movie col-lg-3 col-md-4 col-xs-12">
+                                        <div class="thumb">
+                                            <!--<h4>{{movie[1]}}</h4>-->
+                                            <a><i class="fa fa-star" id="{{movie[0]}}" onclick="changeStarColor(this.id, this.style.color)" data-stared=false, data-genre="{{genre}}"></i></a>
+                                            <img class="f-img img-fluid" src="{{movie[2]}}" alt="{{movie[1]}}" style="height: 250px; object-fit: cover; object-position: center;">
+                                            <!--src="data:image/png;base64,{{movie[2]}}"-->
+                                        </div>
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                        <button type="button" id="test" onclick="getAllIds({{min_required_no_of_movies_by_user}}, {{no_imdb_genres}})" style="color:red">Validate</button>
+
+                        <p>
+                            {{ form.stared_ids(id="stared_ids") }}
+                        </p>
+                        <p>
+                            {{ form.stared_valid(id="stared_valid") }}
+                            {% for error in form.stared_valid.errors %}
+                                <span class="error-message">{{ error }}</span>
+                            {% endfor %}
+                        </p>
+                        <p>
+                            {{ form.submit() }}
+                        </p>
+
+                        <p>Already have account? <a href="{{url_for('login.login_user')}}"> Login </a></p>
+
+
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block registration_js %}
+    <script type='text/javascript' src="{{ url_for('static', filename='js/change_star_color.js') }}"></script>
+    <script type='text/javascript' src="{{ url_for('static', filename='js/count_stars.js') }}"></script>
+{% endblock %}
+

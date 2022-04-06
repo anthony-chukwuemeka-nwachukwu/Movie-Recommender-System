@@ -1,61 +1,50 @@
-{% macro navbar() -%}
+{% macro navbar(user, signed_in, sign_in_out) -%}
 <nav class="navbar fixed-top navbar-dark navbar-expand-md bg-faded justify-content-center">
     <div class="container">
       <a href="/" class="navbar-brand d-flex w-20 me-auto"><img src="{{ url_for('static', filename='img/logo.png') }}" width="100" height="50"></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsingNavbar3">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".collapsingNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="navbar-collapse collapse w-100" id="collapsingNavbar3">
+        <div class="navbar-collapse collapse w-100 collapsingNavbar">
 
             <ul class="nav navbar-nav ms-auto w-100 justify-content-begin">
                 <li class="nav-item">
-                    <a class="nav-link" href="/">HOME<span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{{url_for('index.home', query='False')}}">HOME<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">TV Shows</a>
+                    <a class="nav-link" href="#">Genre</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Movies</a>
+                    <a class="nav-link" href="#">About</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#">Recently Added</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">MyList</a>
+                <a class="nav-link" href="{{url_for('like.liked_movies')}}">MyList</a>
             </li>
             </ul>
+
         </div>
 
-        <div class="navbar-collapse collapse w-100" id="collapsingNavbar3">
+        <div class="navbar-collapse collapse w-100 collapsingNavbar">
 
             <ul class="nav navbar-nav ms-auto w-100 justify-content-end">
-                
-                <li class="nav-item">
-                    <form action="{{ url_for('search.search_movie') }}" method="post">
-                        <div class="input-group">
-                          <input type="search" class="form-control" id="search" placeholder="Search" name="search", style="width: 450px !important; height: 20px">
-                            <button class="input-group-text border-0" id="search-addon", style="background-color: black; color: white;" type="submit">
-                              <i class="fas fa-search"></i>
-                            </button>
-                        </div>
-                      </form>
-                </li>
-
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">KIDS</a>
-                </li>
-                <li class="nav-item">
-                    <i class="fas fa-bell"></i>
+                    <a class="nav-link" href="#">{{user}}</a>
                 </li>
                 
                 <li class="nav-item">
-                    <i class="far fa-user"></i>
+                    {% if sign_in_out!=signed_in %}
+                        <a class="nav-link" href="{{url_for('logout.logout_user')}}">{{sign_in_out}}</a>
+                    {% else %}
+                        <a class="nav-link" href="{{url_for('login.login_user')}}">{{sign_in_out}}</a>
+                    {% endif %}
                 </li>
-                <li class="nav-item">
-                    <i class="fas fa-caret-down"></i>
-                </li>
+
             </ul>
+
         </div>
 
     </div>

@@ -10,70 +10,46 @@
 
       <div class="container">
         
-            <div class="col-lg-10 col-md-10 col-sm-10 mx-auto">
-                <div class="row post-preview">
-                  <div class="col-lg-3 col-md-3 col-xs-3 d-flex justify-content-center img-fluid align-self-center">
-                    <a href="https://www.imdb.com/title/{{movies[3]}}/" target="_blank">
-                    <img class="f-img img-fluid" src="{{movies[4]}}" style="height: 250px; object-fit: cover; object-position: center;">
-                  </a>
-                  </div>
+        <div class="col-lg-10 col-md-10 col-sm-10 mx-auto">
+            <div class="row post-preview">
+              <div class="col-lg-3 col-md-3 col-xs-3 d-flex justify-content-center img-fluid align-self-center">
+                <a id="{{id}}+" href="{{url_for( 'movie.get_movie', check_insert_like='True', movieid=id, user_name=session.get('user_id'), genre=genre, id=id, title=title, poster=poster, url=url, duration=duration, director=director, description=description, check_if_main_movie=True )}}"><i class="fa fa-star" style="color: {{main_movie_color}};"></i></a>  
+                <a href="{{url}}" target="_blank">
+                <img class="f-img img-fluid" src="{{poster}}" style="height: 250px; object-fit: cover; object-position: center;">
+                <!--src="data:image/png;base64,{{poster}}"-->
+              </a>
+              </div>
 
-                  <div class="col-lg-9 col-md-9 col-xs-9">
-                    <h2 class="post-title">
-                      <a href="https://www.imdb.com/title/{{movies[3]}}/" target="_blank">{{movies[1]}}</a>
-                    </h2>
-                    <h3>{{genre}}</h3>
-                    <p>{{movies[2]}}</p>
-                    <p class="post-meta">director on {{movies[-1]}}</p>
-                  </div>
-                </div>
+              <div class="col-lg-9 col-md-9 col-xs-9">
+                <h2 class="post-title">
+                  <a href="{{url}}" target="_blank">{{title}}</a>
+                </h2>
+                <h3>{{genre}}</h3>
+                <p>{{description}}</p>
+                <p class="post-meta">director: {{director}}</p>
+              </div>
             </div>
+        </div>
+
+        <div class="row" style="padding-bottom: 50px; padding-top: 50px;">
+
+          {% for movie in similar_movies  %}
+            <div class="genre-movie col-lg-2 col-md-4 col-xs-6">
+              <div class="thumb">
+                <a id="{{movie[0]}}+" href="{{url_for( 'movie.get_movie', check_insert_like='True', movieid=movie[0], user_name=session.get('user_id'), genre=genre, id=id, title=title, poster=poster, url=url, duration=duration, director=director, description=description, check_if_main_movie=False )}}"><i class="fa fa-star" style="color: {{movie[8]}};"></i></a>
+                <a href="{{url_for('movie.get_movie', genre=genre, id=movie[0], title=movie[1], poster=movie[2], url=movie[3], duration=movie[4], director=movie[5], description=movie[6], main_movie_color=movie[8])}}">  
+                  <img class="f-img img-fluid" src="{{movie[2]}}" alt="{{movie[1]}}" style="height: 250px; object-fit: cover; object-position: center;">
+                </a>
+              </div>
+            </div>
+          {% endfor %}
+  
+        </div>
 
       </div>
+
 
     </section>
-
-    <section class="sample-text-area">
-
-      <div class="container">
-        {% for comment in comments %}
-            <div class="get_comments">
-              <p class="post-meta">{{comment['user_name']}}  {{comment['createdAt']}}</p>
-              <p>{{comment['comment']}}</p>
-            </div>
-        {% endfor %}
-      </div>
-
-    </section>
-
-    <section class="contactform-area section-gap">
-      
-      <div class="container contact-div">
-        <h3 style="padding-bottom: 20px;">Comment</h3>
-      
-        <form id="contactForm" method="post" name="myemailform" action="{{ url_for('submit_comment') }}">
-      
-          <div class="mb-3">
-            <input class="form-control" id="name" type="text" placeholder="Name" name="name"/>
-          </div>
-      
-          <div class="mb-3">
-            <input class="form-control" id="emailAddress" type="email" placeholder="Email Address" name="email"/>
-          </div>
-      
-          <div class="mb-3">
-            <textarea class="form-control" id="comment" type="text" placeholder="Leave a comment" style="height: 10rem;" name="comment"></textarea>
-          </div>
-
-          <input type="hidden" id="movie_id" name="movie_id" value={{movie_id}}>
-
-          <div class="d-grid">
-            <button class="btn btn-primary btn-sm" type="submit">Submit</button>
-          </div>
-      
-        </form>
-      
-      </div>
-      </section>
 
 {% endblock %}
+

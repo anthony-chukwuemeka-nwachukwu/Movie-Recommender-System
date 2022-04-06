@@ -4,7 +4,7 @@
 
 <html lang="en">
   <head>
-    <!-- Required meta tags -->
+    <!-- meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Bootstrap CSS -->
@@ -15,17 +15,24 @@
     <!-- aweson css -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/all.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles1.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 
     <title>{% block title %}{% endblock %}</title>
   </head>
   <body>
-    {{navbar()}}
+    {% if session['user'] %}
+      {{navbar(session['user'], signed_in, session['sign_in_out'])}}
+    {% else %}
+      {{navbar('', signed_in, session['sign_in_out'])}}
+    {% endif %}
 
     <div id="content">{% block content %}{% endblock %}</div>
 
     {{footer()}}
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+    {% block registration_js %}{% endblock %}
+
   </body>
 </html>

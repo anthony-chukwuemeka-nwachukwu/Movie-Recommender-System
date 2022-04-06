@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}{{ app_title}}{% endblock %}
+
+{% block content %}
+
+	<section class="genre-area section-gap">
+        <div class="container">
+
+            <div class="register-movie-details col-lg-12 col-md-12 col-sm-12 mx-auto">
+                <h3>Movie choices</h3>
+
+                {% for genre,movies in movies_by_genres.items() %}
+
+                <div class="row" style="padding-bottom: 50px; padding-top: 50px;">
+
+                    <h4>{{genre}} </h4>
+
+                    {% for movie in movies %}
+
+                        <div class="genre-movie col-lg-3 col-md-4 col-xs-12">
+                            <div class="thumb">
+                                <h4>{{movie[1]}}</h4>
+                                <a id="{{movie[0]}}+" href="{{url_for('like.delete_like', like_id=movie[0])}}"><i class="fa fa-star" id="{{movie[0]}}" onclick="changeStarColor(this.id)" data-username="{{username}}" data-stared=false, data-genre="{{genre}}" style="color: {{star_color}};"></i></a>
+                                <a href="{{url_for('movie.get_movie', genre=genre, id=movie[0], title=movie[1], poster=movie[2], url=movie[3], duration=movie[4], director=movie[5], description=movie[6], main_movie_color='orange')}}">
+                                    <img class="f-img img-fluid" src="{{movie[2]}}" alt="{{movie[1]}}" style="height: 250px; object-fit: cover; object-position: center;">
+                                    <!--src="data:image/png;base64,{{movie[2]}}"-->
+                                </a>
+                            </div>
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+        </div>
+
+	</section>
+
+{% endblock %}
+
+{% block registration_js %}
+    <script type="text/javascript" src="{{ url_for('static', filename='js/like.js') }}"></script> 
+{% endblock %}

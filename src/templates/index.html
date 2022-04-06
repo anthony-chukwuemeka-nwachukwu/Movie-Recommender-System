@@ -1,34 +1,9 @@
 {% extends "base.html" %}
-{% block title %}Index{% endblock %}
+{% block title %}{{ app_title}}{% endblock %}
 
 {% block content %}
 
-	<!-- Start recent-blog Area -->
-	<section class="recent-blog-area section-gap">
-		
-		<div class="container">
-			
-			{% for genre in genres %}
-
-			<div class="row" style="padding-bottom: 50px; padding-top: 50px;">
-
-				<h4>{{genre[0][-1]}} </h4>
-				
-				{% for movies in genre %}
-					<div class="single-recent-blog col-lg-2 col-md-4 col-xs-6">
-						<div class="thumb">
-							<a href="movie/{{movies[0]}}" target="_blank">
-							<img class="f-img img-fluid" src="{{movies[4]}}" alt="{{movies[1]}}" style="height: 250px; object-fit: cover; object-position: center;">
-						</a>
-						</div>
-					</div>
-				{% endfor %}
-
-			</div>
-
-			{% endfor %}
-
-		</div>
+	<section class="genre-area section-gap">
 
 		<div class="col-md-6 offset-md-3">
 			<form name="search" action="" method="post" novalidate>
@@ -44,8 +19,33 @@
 			</form>
 		</div>
 
+		<div class="container">
+
+			{% for genre in sorted_keys %}
+
+			<div class="row" style="padding-bottom: 50px; padding-top: 50px;">
+
+				<h4>{{genre}} </h4>
+
+				{% for movie in genres[genre]  %}
+					<div class="genre-movie col-lg-2 col-md-4 col-xs-6">
+						<div class="thumb">
+							<a id="{{movie[0]}}+" href="{{url_for( 'index.home', user_name=session.get('user_id'), genre=genre, id=movie[0], title=movie[1], poster=movie[2], url=movie[3], duration=movie[4], director=movie[5], description=movie[6],query='True' )}}"><i class="fa fa-star" style="color: {{movie[7]}};"></i></a>
+							<a href="{{url_for('movie.get_movie', genre=genre, id=movie[0], title=movie[1], poster=movie[2], url=movie[3], duration=movie[4], director=movie[5], description=movie[6], main_movie_color=movie[7])}}">
+								<img class="f-img img-fluid" src="{{movie[2]}}" alt="{{movie[1]}}" style="height: 250px; object-fit: cover; object-position: center;">
+								<!--src="data:image/png;base64,{{movie[2]}}"-->
+							</a>
+						</div>
+					</div>
+				{% endfor %}
+
+			</div>
+
+			{% endfor %}
+
+		</div>
+
 	</section>
-	<!-- end recent-blog Area -->
 
 
 {% endblock %}
