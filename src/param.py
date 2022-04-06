@@ -27,7 +27,22 @@ def get_genre_index(genre):
     return
 
 
-if __name__ == "__main__":
+# Templates
+app_title = 'More Flix'
+
+# Sign in and out
+signed_in = 'Sign In'
+signed_out = 'Sign Out'
+
+# Registration view
+no_of_movie_per_genre = 15
+min_required_no_of_movies_by_user = 2
+no_imdb_genres = 18#len(imdb_genres)-1
+
+# Movie view
+no_of_similar_movies = 10
+
+if __name__ == '__main__':
     print(get_year_index(2009))
     print(get_genre_index('adventure'))
     print([i.lower() for i in []])
