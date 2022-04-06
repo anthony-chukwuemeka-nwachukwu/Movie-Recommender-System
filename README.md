@@ -1,6 +1,8 @@
 # Movie-Recommender-System
 An AI empowered movie recommender system with powerful search engine.
 
+![alt text](readme/app.png)
+
 ## Description
 This is a web-based app that provides personalized movie recommendation to the user. 
 The user is first required to create account, during which process he is to like some 
