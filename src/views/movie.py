@@ -29,7 +29,7 @@ def get_movie():
             insert_like(movieid,session.get('user_id'))
             main_movie_color = 'orange'
         else:
-            delete_like(movieid)
+            delete_like(movieid,session.get('user_id'))
             main_movie_color = 'white'
 
 

@@ -33,6 +33,9 @@ def register_user():
         user = User(username=email, password=password, first_name=first_name, last_name=last_name)
         db.session.add(user)
         db.session.commit()
+
+        #add_user_dislikes(movies, email)
+
         flash('You are successfully registered!', 'success')
         session['user'] = None
         session['sign_in_out'] = signed_in
@@ -41,6 +44,21 @@ def register_user():
     return render_template('register.html', title='Register', form=form, movies_by_genres=movies,
                            min_required_no_of_movies_by_user=min_required_no_of_movies_by_user, no_imdb_genres=no_imdb_genres)
 
+def add_user_dislikes(movies, username):
+
+    likes_query = """SELECT movie_id FROM movies_user_like WHERE username = '{}'""".format(username)
+    query_dislike = lambda movieid: """INSERT INTO movies_user_dislike(movie_id, username) VALUES('{}', '{}')""".format(movieid,username);
+    user_likes = [l[0] for l in db.session.execute( likes_query ).all()]
+    
+    like_dislikes = []
+    for movie in list(movies.keys()):
+        like_dislikes.extend([m[0] for m in movies[movie]])
+    distinct_movies = list(set(like_dislikes))
+    
+    for m in distinct_movies:
+        if m != 'not-validated' and m not in user_likes:
+            db.session.execute(query_dislike(m))
+    db.session.commit()
 
 def get_movies():
     # get movie titles in genres

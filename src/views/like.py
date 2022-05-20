@@ -13,13 +13,21 @@ like = Blueprint('like', __name__)
 def delete_like(like_id):
     query = """DELETE FROM movies_user_like WHERE movie_id='{}';""".format(like_id)
     db.session.execute(query)
+
+    query_dislike = """INSERT INTO movies_user_dislike(movie_id, username) VALUES('{}', '{}')""".format(like_id,session.get('user_id'));
+    query_like = """DELETE FROM movies_user_like WHERE movie_id='{}' AND username='{}';""".format(like_id,session.get('user_id'))
+    db.session.execute(query_like)
+    db.session.execute(query_dislike)
+
     db.session.commit()
     return liked_movies()
 
 @like.route('/like/<movieid>/<user_name>/<source>', methods=['POST', 'GET'])
 def insert_like(movieid,user_name,source):
-    query = """INSERT INTO movies_user_like(movie_id, username) VALUES('{}', '{}')""".format(movieid,user_name);
-    db.session.execute(query)
+    query_like = """INSERT INTO movies_user_like(movie_id, username) VALUES('{}', '{}')""".format(movieid,user_name);
+    query_dislike = """DELETE FROM movies_user_dislike WHERE movie_id='{}' AND username='{}';""".format(movieid,user_name)
+    db.session.execute(query_like)
+    db.session.execute(query_dislike)
     db.session.commit()
 
     if source == 'movie':

@@ -42,6 +42,11 @@ no_imdb_genres = 18#len(imdb_genres)-1
 # Movie view
 no_of_similar_movies = 10
 
+# Index, Movie recommendation
+
+#model_filename = "/home/anthony/Documents/Strive/Movie-Recommender-System/src/utils/production/model.pickle"
+model_filename = "src/utils/production/model.pickle"
+
 if __name__ == '__main__':
     print(get_year_index(2009))
     print(get_genre_index('adventure'))

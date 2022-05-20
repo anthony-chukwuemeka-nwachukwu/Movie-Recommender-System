@@ -31,9 +31,9 @@ def home():
             try:
                 genres, sorted_keys = utils.search_movies(session['search_query'])
             except:
-                genres, sorted_keys = utils.get_movies()
+                genres, sorted_keys = utils.recommend_movie_to_user(session.get('user_id'))
         else:
-            genres, sorted_keys = utils.get_movies()
+            genres, sorted_keys = utils.recommend_movie_to_user(session.get('user_id'))
 
     # checking and unchecking start starts
     movieid = request.args.get('id')
@@ -41,7 +41,7 @@ def home():
     if star_color == "white":
         insert_like(movieid, session.get('user_id'))
     else:
-        delete_like(movieid)
+        delete_like(movieid, session.get('user_id'))
     # star_color = utils.liked_movie(movieid,session.get('user_id'))
 
     for genre in genres:

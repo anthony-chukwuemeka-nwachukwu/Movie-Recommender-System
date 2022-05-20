@@ -10,6 +10,8 @@ import src.param as pm
 from pandas.api.types import CategoricalDtype
 from src.param import no_of_movie_per_genre, no_imdb_genres
 from .search_feature_extraction import FeatureExtraction
+from surprise import dump
+import os
 
 nltk.download('stopwords')
 nltk.download('punkt')
@@ -171,8 +173,83 @@ class Utils:
                     new_movies.append(new_movie)
             
             movie_all[genre.capitalize()] = new_movies[:no_of_movie_per_genre]
+        
 
         return movie_all, list(movie_all.keys())
+
+    def load_model(self,model_filename):        
+        file_name = os.path.expanduser(model_filename)
+        _, loaded_model = dump.load(file_name)
+        
+        return loaded_model
+
+    def movieRating(self,userID,movieIDs,model_filename):
+        loaded_model = self.load_model(model_filename)
+        ratings = []
+        sorted_ratings = []
+        sorted_movieIDs = []
+        for movieID in movieIDs:
+            prediction = loaded_model.predict(userID, movieID, verbose=False)
+            rating = prediction.est
+            ratings.append(rating)
+        for sorted_rating, sorted_movieID in sorted(zip(ratings, movieIDs),reverse=True):
+            sorted_ratings.append(sorted_rating)
+            sorted_movieIDs.append(sorted_movieID)
+
+
+        return sorted_movieIDs, sorted_ratings
+
+    def recommend_movie_to_user(self,userID):
+        # get movie titles in genres
+        genres = """SELECT DISTINCT genre FROM genre"""
+        genres = [g[0] for g in db.session.execute(genres).all()][:pm.no_imdb_genres]
+
+        movie_all = {}
+        genres_query = lambda g: """SELECT DISTINCT movie_id FROM genre WHERE genre='{}'""".format(g)
+        movie_query = lambda m: """SELECT id, title, poster_address, url, duration, director, description FROM movies WHERE id='{}'""".format(m)
+
+        unique_titles = []
+        genre_scores = []
+        for genre in genres:
+            movies = [db.session.execute(movie_query(g[0])).all() for g in
+                    db.session.execute(genres_query(genre)).all()]
+            new_movies = []
+            items = []
+            for movie in movies:
+                items.append(movie[0][0])
+                if movie[0][0] not in unique_titles:
+                    unique_titles.append(movie[0][0])
+                    new_movie = []
+                    for i, m in enumerate(movie[0]):
+
+                        if i == 2:
+                            #new_movie.append(base64.b64encode(m).decode("utf-8"))
+                            new_movie.append(m)
+                        else:
+                            new_movie.append(m)
+                    new_movies.append(new_movie)
+                
+            df = pd.DataFrame(new_movies, columns =['id', 'title', 'poster', 'url', 'duration', 'director', 'description'])
+
+            #ranking
+            movieIDs = list(set(df['id'].values.tolist()))
+            rank_ids,rank_scores=self.movieRating(userID,movieIDs,pm.model_filename)
+            genre_scores.append(sum(rank_scores))
+            
+            id_order = CategoricalDtype(rank_ids, ordered=True)
+            df['id'] = df['id'].astype(id_order)
+            df = df.sort_values('id')
+
+            #movie_genre.append(df.head(pm.no_of_movie_per_genre).values)
+
+            tdf = list(df.itertuples(index=False, name=None))
+
+            movie_all[genre.capitalize()] = tdf[:pm.no_of_movie_per_genre]
+
+        indices_genre_scores = [i[0] for i in sorted(enumerate(genre_scores), reverse=True, key=lambda x:x[1])]
+        sorted_genres = [list(movie_all.keys())[index] for index in indices_genre_scores]
+    
+        return movie_all, sorted_genres
 
     
     def rank_movies(self,query, movie_id):
